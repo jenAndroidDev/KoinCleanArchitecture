@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.example.koincleanarchitecture"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.koincleanarchitecture"
@@ -32,6 +32,18 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+    flavorDimensions("appType")
+    productFlavors{
+        create("dev"){
+            dimension = "appType"
+            applicationIdSuffix=".dev"
+            buildConfigField("String","BASE_URL","https://rickandmortyapi.com/")
+        }
+    }
+    buildFeatures{
+        viewBinding = true
+        buildConfig = true
     }
 }
 

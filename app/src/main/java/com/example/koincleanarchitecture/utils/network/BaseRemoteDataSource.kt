@@ -10,7 +10,7 @@ import java.io.IOException
 import java.net.HttpURLConnection
 
 open class BaseRemoteDataSource(
-    val netWorkHelper: NetworkHelper,
+    private val netWorkHelper: NetworkHelper,
 ) {
 
     private val logTag: String = BaseRemoteDataSource::class.java.simpleName
