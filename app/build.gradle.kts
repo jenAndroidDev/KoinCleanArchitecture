@@ -38,7 +38,7 @@ android {
         create("dev"){
             dimension = "appType"
             applicationIdSuffix=".dev"
-            buildConfigField("String","BASE_URL","https://rickandmortyapi.com/")
+            buildConfigField("String","BASE_URL","\"https://rickandmortyapi.com\"")
         }
     }
     buildFeatures{
@@ -69,6 +69,9 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     /*Timber */
     implementation(libs.timber)
+    /*Activity Ktx*/
+    implementation(libs.androidx.fragment.ktx)
+    implementation(libs.androidx.activity.ktx)
 
 
     implementation(libs.androidx.lifecycle.lifecycle.common)
