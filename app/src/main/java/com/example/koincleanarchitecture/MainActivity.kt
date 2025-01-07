@@ -19,6 +19,14 @@ import org.koin.android.ext.android.inject
 
 private const val Tag = "MainActivity"
 class MainActivity : AppCompatActivity() {
+    /*
+    * 1.Create a recycler view and populate the data
+    * 2.Add pagination and loadstate
+    * 3.Add End of Pagination Component
+    * 4.Add LoadState Adapter
+    * 5.Migrate to Ktor
+    * 6.Toggle Functionality for Character ReadStatus.
+    * 7.Unit Test with Junit4*/
     lateinit var binding: ActivityMainBinding
     private val viewModel: MainActivityViewModel by inject()
     override fun onCreate(savedInstanceState: Bundle?) {
