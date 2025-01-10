@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.koincleanarchitecture.databinding.ActivityMainBinding
 import com.example.koincleanarchitecture.feature.characters.presentation.CharacterUiState
+import com.example.koincleanarchitecture.feature.characters.presentation.CharactersAdapter
 import com.example.koincleanarchitecture.feature.characters.presentation.MainActivityViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -47,11 +48,15 @@ class MainActivity : AppCompatActivity() {
     private fun ActivityMainBinding.bindState(
         uiState:StateFlow<CharacterUiState>
     ){
+        val adapter = CharactersAdapter()
+        rvCharacters.adapter = adapter
         val characters = uiState.map { it.data }.distinctUntilChanged()
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 characters.collectLatest {
-                    Log.d(Tag, "bindState() called...$it")
+                    adapter.submitList(it)
+                    Log.d(Tag, "bindState" +
+                            "ad() called...$it")
                 }
             }
         }

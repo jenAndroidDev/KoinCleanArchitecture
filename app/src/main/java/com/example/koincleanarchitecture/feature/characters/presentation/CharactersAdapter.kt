@@ -35,7 +35,7 @@ class CharactersAdapter:ListAdapter<CharacterUiModel,CharactersAdapter.Character
     ):RecyclerView.ViewHolder(binding.root){
 
         fun bind(model:Character) = with(binding){
-
+            tvName.text =model.name
         }
     }
 
