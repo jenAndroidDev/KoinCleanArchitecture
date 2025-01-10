@@ -3,6 +3,7 @@ agp = "8.6.0"
 activity-ktx = "1.7.1"
 kotlin = "1.9.0"
 coreKtx = "1.15.0"
+coil = "3.0.4"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
@@ -24,6 +25,8 @@ koin-annotation = "1.4.0-RC3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
+coil3-coil = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -54,6 +57,7 @@ androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-view
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines"}
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+coil = {module="io.coil-kt:coil",version.ref="coil"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

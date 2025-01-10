@@ -72,6 +72,10 @@ dependencies {
     /*Activity Ktx*/
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.activity.ktx)
+    /*Coil For Image Loading*/
+
+    implementation(libs.coil3.coil)
+    implementation(libs.coil.network.okhttp)
 
 
     implementation(libs.androidx.lifecycle.lifecycle.common)
