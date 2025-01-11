@@ -1,8 +1,7 @@
 package com.example.koincleanarchitecture.feature.characters.presentation
 
 
-import android.graphics.pdf.PdfDocument.Page
-import android.util.Log
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.koincleanarchitecture.feature.characters.domain.model.Character
@@ -23,6 +22,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.concurrent.CancellationException
 
 
@@ -61,7 +61,6 @@ class MainActivityViewModel(private val repository: CharacterRepository) :ViewMo
         when(action){
             is CharacterUiAction.Scroll->{
                 viewModelScope.launch { scrollState.emit(action) }
-                Log.d(Tag, "onUiAction() called with: action = $action")
             }
             is CharacterUiAction.Refresh->{
                 createCharacterPagedRequest(shouldRefresh = true)
@@ -98,17 +97,22 @@ class MainActivityViewModel(private val repository: CharacterRepository) :ViewMo
                                 CharacterUiModel.CharacterUiItem(it)
                             }
                         )
-                        if (tempList.isNotEmpty())pageNumber++
                         _uiState.update {
                             it.copy(
                                 data = tempList
                             )
                         }
-
-                        Log.d(Tag, "getAllCharacters() called with: result = ${result.data.data}")
+                        endOfPagination = result.data.data.size < DEFAULT_LOAD_SIZE
+                        Timber.tag(Tag).d("endOfPagination...$endOfPagination")
+                        if (endOfPagination){
+                            setLoading(loadType,LoadState.NotLoading.Complete)
+                        }else{
+                            pageNumber++
+                            setLoading(loadType,LoadState.NotLoading.InComplete)
+                        }
                     }
                     is Result.Error->{
-                        //TODO W.r.t Jenin Joseph
+                        setLoading(loadType,LoadState.Error(result.exception))
                     }
                 }
             }
