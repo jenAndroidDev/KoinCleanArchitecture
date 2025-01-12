@@ -6,7 +6,7 @@ import com.example.koincleanarchitecture.feature.characters.domain.source.remote
 import com.example.koincleanarchitecture.utils.network.NetworkResult
 import com.example.koincleanarchitecture.utils.network.NetworkResultParser
 import com.example.koincleanarchitecture.utils.network.Result
-import com.pepul.shopsseller.utils.paging.PagedData
+import com.example.koincleanarchitecture.utils.paging.PagedData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

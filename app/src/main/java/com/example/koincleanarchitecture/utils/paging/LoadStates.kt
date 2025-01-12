@@ -1,4 +1,4 @@
-package com.pepul.shopsseller.utils.paging
+package com.example.koincleanarchitecture.utils.paging
 
 public data class LoadStates(
     public val refresh: LoadState,

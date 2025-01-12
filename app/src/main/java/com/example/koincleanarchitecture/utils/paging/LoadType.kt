@@ -1,4 +1,4 @@
-package com.pepul.shopsseller.utils.paging
+package com.example.koincleanarchitecture.utils.paging
 
 public enum class LoadType {
     REFRESH, PREPEND, APPEND, ACTION

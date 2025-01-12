@@ -1,5 +1,7 @@
 package com.pepul.shopsseller.utils.paging
 
+import com.example.koincleanarchitecture.utils.paging.LoadType
+
 
 sealed class PagedRequest<Key: Any> constructor(
     public val loadSize: Int,

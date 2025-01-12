@@ -1,7 +1,6 @@
 package com.example.koincleanarchitecture
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -15,8 +14,7 @@ import com.example.koincleanarchitecture.feature.characters.presentation.Charact
 import com.example.koincleanarchitecture.feature.characters.presentation.CharacterUiState
 import com.example.koincleanarchitecture.feature.characters.presentation.CharactersAdapter
 import com.example.koincleanarchitecture.feature.characters.presentation.MainActivityViewModel
-import com.pepul.shopsseller.utils.paging.LoadState
-import com.pepul.shopsseller.utils.paging.LoadStates
+import com.example.koincleanarchitecture.utils.paging.LoadState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest

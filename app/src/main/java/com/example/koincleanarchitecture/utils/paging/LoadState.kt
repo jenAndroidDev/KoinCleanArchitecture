@@ -1,4 +1,4 @@
-package com.pepul.shopsseller.utils.paging
+package com.example.koincleanarchitecture.utils.paging
 
 public sealed class LoadState(
     public val endOfPaginationReached: Boolean = false

@@ -7,9 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.koincleanarchitecture.feature.characters.domain.model.Character
 import com.example.koincleanarchitecture.feature.characters.domain.repository.CharacterRepository
 import com.example.koincleanarchitecture.utils.network.Result
-import com.pepul.shopsseller.utils.paging.LoadState
-import com.pepul.shopsseller.utils.paging.LoadStates
-import com.pepul.shopsseller.utils.paging.LoadType
+import com.example.koincleanarchitecture.utils.paging.LoadState
+import com.example.koincleanarchitecture.utils.paging.LoadStates
+import com.example.koincleanarchitecture.utils.paging.LoadType
 import com.pepul.shopsseller.utils.paging.PagedRequest
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -105,14 +105,14 @@ class MainActivityViewModel(private val repository: CharacterRepository) :ViewMo
                         endOfPagination = result.data.data.size < DEFAULT_LOAD_SIZE
                         Timber.tag(Tag).d("endOfPagination...$endOfPagination")
                         if (endOfPagination){
-                            setLoading(loadType,LoadState.NotLoading.Complete)
+                            setLoading(loadType, LoadState.NotLoading.Complete)
                         }else{
                             pageNumber++
-                            setLoading(loadType,LoadState.NotLoading.InComplete)
+                            setLoading(loadType, LoadState.NotLoading.InComplete)
                         }
                     }
                     is Result.Error->{
-                        setLoading(loadType,LoadState.Error(result.exception))
+                        setLoading(loadType, LoadState.Error(result.exception))
                     }
                 }
             }
@@ -120,7 +120,7 @@ class MainActivityViewModel(private val repository: CharacterRepository) :ViewMo
     }
     private fun setLoading(
         loadType: LoadType = LoadType.REFRESH,
-        loadState:LoadState
+        loadState: LoadState
     ){
         val newLoadState =uiState.value.loadState
             .modifyState(loadType,loadState)
