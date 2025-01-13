@@ -1,27 +1,34 @@
 package com.example.koincleanarchitecture
 
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.koincleanarchitecture.databinding.ActivityMainBinding
 import com.example.koincleanarchitecture.feature.characters.presentation.CharacterUiAction
 import com.example.koincleanarchitecture.feature.characters.presentation.CharacterUiState
 import com.example.koincleanarchitecture.feature.characters.presentation.CharactersAdapter
+import com.example.koincleanarchitecture.feature.characters.presentation.CharactersLoadStateAdapter
+import com.example.koincleanarchitecture.feature.characters.presentation.DummyAdapter
 import com.example.koincleanarchitecture.feature.characters.presentation.MainActivityViewModel
 import com.example.koincleanarchitecture.utils.paging.LoadState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
+import timber.log.Timber
 
 private const val Tag = "MainActivity"
 class MainActivity : AppCompatActivity() {
@@ -53,7 +60,27 @@ class MainActivity : AppCompatActivity() {
         action:(CharacterUiAction)->Unit
     ){
         val adapter = CharactersAdapter()
-        listCharacters.adapter = adapter
+        val sampleAdapter = DummyAdapter()
+        val dummyData = uiState.map { it.dummyList }.distinctUntilChanged()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                dummyData.collectLatest {
+                    sampleAdapter.submitList(it)
+                }
+            }
+        }
+        val footerAdapter = CharactersLoadStateAdapter{
+            viewModel.refreshCharacterFeed()
+        }
+        val loadState = uiState.map { it.loadState }.distinctUntilChanged()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                loadState.collectLatest {loadState->
+                    footerAdapter.loadState = loadState
+                }
+            }
+        }
+
         val characters = uiState.map { it.data }.distinctUntilChanged()
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
@@ -62,8 +89,13 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+        val concatAdapter = ConcatAdapter(
+            adapter,footerAdapter
+        )
+
+        listCharacters.adapter = concatAdapter
         val endOfPagination = uiState.map {
-            it.loadState
+            it.loadStates
         }.distinctUntilChanged()
             .map {
                 it.refresh is LoadState.Loading||it.refresh.endOfPaginationReached
@@ -73,18 +105,23 @@ class MainActivity : AppCompatActivity() {
             onScrollChanged = action,
             endOfPagination = endOfPagination
         )
-        val loadStates = uiState.map { it.loadState }.distinctUntilChanged()
+        val loadStates = uiState.map { it.loadStates }.distinctUntilChanged()
+
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 loadStates.collectLatest { loadState->
                     when{
                         loadState.refresh is LoadState.Loading->{
-                            pgCharacters.isVisible = uiState.value.data.isEmpty()
+                           pgCharacters.isVisible = uiState.value.data.isEmpty()
                         }
-                        loadState.refresh is LoadState.NotLoading->{}
+                        loadState.refresh is LoadState.NotLoading->{
+
+                        }
+                        loadState.append is LoadState.Loading->{
+                        }
                         else->{
                             listCharacters.isVisible =uiState.value.data.isNotEmpty()
-                            pgCharacters.isVisible = false
+                            pgCharacters.isVisible = adapter.itemCount<=0
                         }
                     }
                 }

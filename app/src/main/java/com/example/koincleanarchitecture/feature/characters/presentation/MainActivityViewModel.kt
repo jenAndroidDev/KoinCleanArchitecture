@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.UUID
 import java.util.concurrent.CancellationException
 
 
@@ -43,7 +44,7 @@ class MainActivityViewModel(private val repository: CharacterRepository) :ViewMo
     init {
         scrollState.distinctUntilChanged()
             .filterNot {
-                uiState.value.loadState.append is LoadState.Loading
+                uiState.value.loadStates.append is LoadState.Loading
             }
             .onEach {action->
                 if (action.shouldFetchMore && !endOfPagination){
@@ -55,6 +56,7 @@ class MainActivityViewModel(private val repository: CharacterRepository) :ViewMo
             onUiAction(it)
         }
         createCharacterPagedRequest(shouldRefresh = true)
+        getSampleData()
     }
 
     private fun onUiAction(action: CharacterUiAction){
@@ -88,7 +90,7 @@ class MainActivityViewModel(private val repository: CharacterRepository) :ViewMo
             repository.getAllCharacters(1).collectLatest {result->
                 when(result){
                     is Result.Loading->{
-                        setLoading(loadState = LoadStates.IDLE.refresh, loadType = loadType)
+                        setLoading(loadState =LoadState.Loading(), loadType = loadType)
                     }
                     is Result.Success->{
                         val tempList = uiState.value.data.toMutableList()
@@ -122,14 +124,35 @@ class MainActivityViewModel(private val repository: CharacterRepository) :ViewMo
         loadType: LoadType = LoadType.REFRESH,
         loadState: LoadState
     ){
-        val newLoadState =uiState.value.loadState
+        val newLoadState =uiState.value.loadStates
             .modifyState(loadType,loadState)
         _uiState.update {
             it.copy(
-                loadState = newLoadState
+                loadStates = newLoadState,
+                loadState = loadState
             )
         }
 
+    }
+    private fun getSampleData(){
+        viewModelScope.launch {
+            val dummyList = arrayListOf<Sample>(
+                Sample(name = "jenin", age = "29"),
+                Sample(name = "jenin", age = "29"),
+                Sample(name = "jenin", age = "29"),
+                Sample(name = "jenin", age = "29"),
+                Sample(name = "jenin", age = "29"),
+            )
+            _uiState.update {
+                it.copy(
+                    dummyList = dummyList
+                )
+            }
+        }
+    }
+
+    fun refreshCharacterFeed() {
+        TODO("Not yet implemented")
     }
 }
 sealed class CharacterUiModel{
@@ -137,7 +160,9 @@ sealed class CharacterUiModel{
 }
 data class CharacterUiState(
     val data:List<CharacterUiModel> = emptyList(),
-    val loadState: LoadStates = LoadStates.IDLE
+    val dummyList:List<Sample> = emptyList(),
+    val loadStates: LoadStates = LoadStates.IDLE,
+    val loadState: LoadState = LoadState.Loading()
 )
 sealed interface CharacterUiAction{
     data class Scroll(
@@ -148,6 +173,11 @@ sealed interface CharacterUiAction{
 
     data object Refresh:CharacterUiAction
 }
+data class Sample(
+    var id:String = UUID.randomUUID().toString(),
+    val name:String,
+    val age:String
+)
 private const val DEFAULT_LOAD_SIZE = 10
 private const val VISIBLE_ITEM_THRESHOLD = 5
 private val CharacterUiAction.Scroll.shouldFetchMore get() =

@@ -1,10 +1,10 @@
 package com.example.koincleanarchitecture.feature.characters.presentation
 
-import android.view.LayoutInflater
+import android.util.Log
 import android.view.ViewGroup
-import com.example.koincleanarchitecture.databinding.LayoutLoadStateViewholderBinding
 import com.example.koincleanarchitecture.utils.paging.LoadState
 import com.example.koincleanarchitecture.utils.paging.loadstateadapter.LoadStateAdapter
+
 
 class CharactersLoadStateAdapter(
     private val retry: () -> Unit
@@ -13,15 +13,17 @@ class CharactersLoadStateAdapter(
         parent: ViewGroup,
         loadState: LoadState
     ): CharactersLoadStateViewHolder {
-        val binding = LayoutLoadStateViewholderBinding.inflate(
-            LayoutInflater.from(
-            parent.context
-        ),parent,false)
-        return CharactersLoadStateViewHolder(binding,retry)
+        Log.d(Tag, "onCreateViewHolder() called with: parent = $parent, loadState = $loadState")
+        return CharactersLoadStateViewHolder.create(parent,retry)
     }
 
     override fun onBindViewHolder(holder: CharactersLoadStateViewHolder, loadState: LoadState) {
+        Log.d(Tag, "onBindViewHolder() called with: holder = $holder, loadState = $loadState")
         holder.bind(loadState = loadState)
+
+    }
+    companion object{
+        private const val Tag = "CharacterLoadStateAdapter"
     }
 
 }

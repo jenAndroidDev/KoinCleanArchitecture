@@ -78,6 +78,8 @@ dependencies {
     implementation(libs.coil.network.okhttp)
     /*Glide for Image Loading*/
     implementation(libs.glide)
+    /*Recycler view*/
+    implementation(libs.androidx.recyclerview)
 
 
     implementation(libs.androidx.lifecycle.lifecycle.common)

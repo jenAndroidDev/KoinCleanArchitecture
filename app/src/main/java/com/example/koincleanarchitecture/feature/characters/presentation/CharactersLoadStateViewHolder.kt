@@ -1,7 +1,9 @@
 package com.example.koincleanarchitecture.feature.characters.presentation
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.koincleanarchitecture.R
@@ -9,6 +11,7 @@ import com.example.koincleanarchitecture.databinding.LayoutLoadStateViewholderBi
 import com.example.koincleanarchitecture.utils.extension.makeVisible
 import com.example.koincleanarchitecture.utils.paging.LoadState
 
+private const val Tag = "CharactersLoadStateViewHolder"
 class CharactersLoadStateViewHolder(
     private val binding: LayoutLoadStateViewholderBinding,
     retry:()->Unit
@@ -19,10 +22,12 @@ class CharactersLoadStateViewHolder(
         }
     }
     fun bind(loadState: LoadState){
+        Log.d(Tag, "bind() called with: loadState = $loadState")
         if (loadState is LoadState.Error ){
             binding.tvErrorMessage.makeVisible()
             binding.tvErrorMessage.text = loadState.error.localizedMessage
         }
+        Toast.makeText(itemView.context,"LoadStateAdapter",Toast.LENGTH_LONG).show()
         binding.pgNowStatusLoad.isVisible = loadState is LoadState.Loading
         binding.btnRetry.isVisible = loadState is LoadState.Error
     }
