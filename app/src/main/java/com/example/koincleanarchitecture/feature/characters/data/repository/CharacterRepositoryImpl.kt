@@ -21,15 +21,17 @@ private const val Tag = "CharacterRepositoryImpl"
                  }
                  is NetworkResult.Success->{
                      val data = networkResult.data!!.results.map { it.toCharacter() }?: emptyList()
-                     val totalCount = data.size
-                     val nextKey = networkResult.data.info
-                     Log.d(Tag, "getAllCharacters() called with: networkResult = ${networkResult.data.info}")
+                     val totalCount = networkResult.data.info.pages
+                     var currentPage = pageNo
+                     val nextKey = if (pageNo==totalCount){
+                         null
+                     }else (++currentPage).toString()
 
                      Result.Success(
                          PagedData(
                              data = data,
                              prevKey = null,
-                             nextKey = null,
+                             nextKey = nextKey,
                              totalCount = totalCount
                          )
                      )

@@ -27,7 +27,7 @@ class CharactersLoadStateViewHolder(
             binding.tvErrorMessage.makeVisible()
             binding.tvErrorMessage.text = loadState.error.localizedMessage
         }
-        Toast.makeText(itemView.context,"LoadStateAdapter",Toast.LENGTH_LONG).show()
+        //Toast.makeText(itemView.context,"LoadStateAdapter",Toast.LENGTH_LONG).show()
         binding.pgNowStatusLoad.isVisible = loadState is LoadState.Loading
         binding.btnRetry.isVisible = loadState is LoadState.Error
     }

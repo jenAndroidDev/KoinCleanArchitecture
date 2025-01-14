@@ -2,6 +2,7 @@ package com.example.koincleanarchitecture.feature.characters.presentation
 
 
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.koincleanarchitecture.feature.characters.domain.model.Character
@@ -14,12 +15,14 @@ import com.pepul.shopsseller.utils.paging.PagedRequest
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -28,16 +31,17 @@ import java.util.concurrent.CancellationException
 
 
 private const val Tag = "MainActivityViewModel"
-
-
 class MainActivityViewModel(private val repository: CharacterRepository) :ViewModel() {
 
     private val _uiState = MutableStateFlow(CharacterUiState())
-    val uiState = _uiState.asStateFlow()
-
+    val uiState = _uiState.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = CharacterUiState()
+    )
     private val scrollState = MutableSharedFlow<CharacterUiAction.Scroll>(1)
     val action:(CharacterUiAction)->Unit
-    private val job:Job?=null
+    private var job:Job?=null
     private var endOfPagination:Boolean = false
     private var pageNumber = 1
 
@@ -56,7 +60,7 @@ class MainActivityViewModel(private val repository: CharacterRepository) :ViewMo
             onUiAction(it)
         }
         createCharacterPagedRequest(shouldRefresh = true)
-        getSampleData()
+
     }
 
     private fun onUiAction(action: CharacterUiAction){
@@ -65,12 +69,14 @@ class MainActivityViewModel(private val repository: CharacterRepository) :ViewMo
                 viewModelScope.launch { scrollState.emit(action) }
             }
             is CharacterUiAction.Refresh->{
-                createCharacterPagedRequest(shouldRefresh = true)
+                //createCharacterPagedRequest(shouldRefresh = true)
             }
         }
     }
     private fun createCharacterPagedRequest(shouldRefresh:Boolean){
-        if (job?.isActive==true ||(!shouldRefresh && endOfPagination )) job?.cancel(
+        if (job?.isActive==true ||(!shouldRefresh && endOfPagination ))
+
+            job?.cancel(
             CancellationException("Ongoing Api Call")
         )
         val pagedRequest = if (shouldRefresh){
@@ -86,14 +92,17 @@ class MainActivityViewModel(private val repository: CharacterRepository) :ViewMo
         }else{
             LoadType.APPEND
         }
-        viewModelScope.launch {
-            repository.getAllCharacters(1).collectLatest {result->
+       job =  viewModelScope.launch {
+            repository.getAllCharacters(pageNo = pageNumber).collectLatest {result->
                 when(result){
                     is Result.Loading->{
                         setLoading(loadState =LoadState.Loading(), loadType = loadType)
                     }
                     is Result.Success->{
                         val tempList = uiState.value.data.toMutableList()
+                        if(loadType==LoadType.REFRESH){
+                            tempList.clear()
+                        }
                         tempList.addAll(
                             result.data.data.map {
                                 CharacterUiModel.CharacterUiItem(it)
@@ -101,15 +110,14 @@ class MainActivityViewModel(private val repository: CharacterRepository) :ViewMo
                         )
                         _uiState.update {
                             it.copy(
-                                data = tempList
+                                data = tempList,
                             )
                         }
-                        endOfPagination = result.data.data.size < DEFAULT_LOAD_SIZE
-                        Timber.tag(Tag).d("endOfPagination...$endOfPagination")
+                        endOfPagination = result.data.nextKey==null
                         if (endOfPagination){
                             setLoading(loadType, LoadState.NotLoading.Complete)
                         }else{
-                            pageNumber++
+                            pageNumber = (result.data.nextKey)!!.toInt()
                             setLoading(loadType, LoadState.NotLoading.InComplete)
                         }
                     }
@@ -121,36 +129,18 @@ class MainActivityViewModel(private val repository: CharacterRepository) :ViewMo
         }
     }
     private fun setLoading(
-        loadType: LoadType = LoadType.REFRESH,
+        loadType: LoadType,
         loadState: LoadState
     ){
-        val newLoadState =uiState.value.loadStates
+        val newLoadState = uiState.value.loadStates
             .modifyState(loadType,loadState)
-        _uiState.update {
-            it.copy(
-                loadStates = newLoadState,
-                loadState = loadState
-            )
-        }
 
-    }
-    private fun getSampleData(){
-        viewModelScope.launch {
-            val dummyList = arrayListOf<Sample>(
-                Sample(name = "jenin", age = "29"),
-                Sample(name = "jenin", age = "29"),
-                Sample(name = "jenin", age = "29"),
-                Sample(name = "jenin", age = "29"),
-                Sample(name = "jenin", age = "29"),
-            )
             _uiState.update {
                 it.copy(
-                    dummyList = dummyList
+                    loadStates = newLoadState,
                 )
             }
-        }
     }
-
     fun refreshCharacterFeed() {
         TODO("Not yet implemented")
     }
