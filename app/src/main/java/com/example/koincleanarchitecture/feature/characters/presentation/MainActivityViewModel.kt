@@ -1,7 +1,4 @@
 package com.example.koincleanarchitecture.feature.characters.presentation
-
-
-
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,7 +13,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNot
@@ -25,7 +21,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.util.UUID
 import java.util.concurrent.CancellationException
 
@@ -74,11 +69,8 @@ class MainActivityViewModel(private val repository: CharacterRepository) :ViewMo
         }
     }
     private fun createCharacterPagedRequest(shouldRefresh:Boolean){
-        if (job?.isActive==true ||(!shouldRefresh && endOfPagination ))
-
-            job?.cancel(
-            CancellationException("Ongoing Api Call")
-        )
+        if (job?.isActive==true ||(!shouldRefresh && endOfPagination )) return
+        job?.cancel(CancellationException("Ongoing Api Call"))
         val pagedRequest = if (shouldRefresh){
             PagedRequest.create(LoadType.REFRESH, key = pageNumber, loadSize = DEFAULT_LOAD_SIZE )
         }else{
@@ -92,7 +84,7 @@ class MainActivityViewModel(private val repository: CharacterRepository) :ViewMo
         }else{
             LoadType.APPEND
         }
-       job =  viewModelScope.launch {
+       job=viewModelScope.launch {
             repository.getAllCharacters(pageNo = pageNumber).collectLatest {result->
                 when(result){
                     is Result.Loading->{
@@ -114,6 +106,7 @@ class MainActivityViewModel(private val repository: CharacterRepository) :ViewMo
                             )
                         }
                         endOfPagination = result.data.nextKey==null
+                        Log.d(Tag, "getAllCharacters() called with: result = $endOfPagination")
                         if (endOfPagination){
                             setLoading(loadType, LoadState.NotLoading.Complete)
                         }else{
@@ -141,8 +134,11 @@ class MainActivityViewModel(private val repository: CharacterRepository) :ViewMo
                 )
             }
     }
+    private fun forceRefresh(){
+        createCharacterPagedRequest(false)
+    }
     fun refreshCharacterFeed() {
-        TODO("Not yet implemented")
+        forceRefresh()
     }
 }
 sealed class CharacterUiModel{

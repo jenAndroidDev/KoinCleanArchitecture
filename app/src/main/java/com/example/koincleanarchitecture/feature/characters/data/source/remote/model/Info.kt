@@ -1,4 +1,4 @@
-package com.example.rickymortypagination.feature.rickymorty.data.source.remote.model
+package com.example.koincleanarchitecture.feature.characters.data.source.remote.model
 
 data class Info(
     val count: Int,

@@ -38,7 +38,7 @@ class CharactersAdapter:ListAdapter<CharacterUiModel,CharactersAdapter.Character
         fun bind(model:Character) = with(binding){
             tvName.text =model.name
             Glide.with(itemView.context)
-                .load(model.url)
+                .load(model.image)
                 .into(ivCharacter)
         }
     }

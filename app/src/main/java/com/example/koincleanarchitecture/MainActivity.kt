@@ -37,9 +37,9 @@ private const val Tag = "MainActivity"
 class MainActivity : AppCompatActivity() {
     /*
     * 1.Create a recycler view and populate the data==>Done
-    * 2.Add pagination and loadstate
-    * 3.Add End of Pagination Component
-    * 4.Add LoadState Adapter
+    * 2.Add pagination and loadstate==>Done
+    * 3.Add End of Pagination Component==>Done
+    * 4.Add LoadState Adapter==>Done
     * 5.Migrate Retrofit Instance to Ktor
     * 6.Toggle Functionality for Character ReadStatus.
     * 7.Unit Test with Junit4
@@ -96,7 +96,6 @@ class MainActivity : AppCompatActivity() {
                 loadStates.collectLatest { loadState->
                     when{
                         loadState.refresh is LoadState.Loading->{
-                            Toast.makeText(this@MainActivity,"Hello1",Toast.LENGTH_LONG).show()
                             Log.d(Tag, "check refresh state called with: loadState = $loadState")
                            pgCharacters.isVisible =true
                             //listCharacters.isVisible = true
@@ -104,7 +103,6 @@ class MainActivity : AppCompatActivity() {
                         loadState.refresh is LoadState.NotLoading->{
                             pgCharacters.isVisible=uiState.value.data.isEmpty()
                             listCharacters.isVisible = uiState.value.data.isNotEmpty()
-                            Toast.makeText(this@MainActivity,"Hello3",Toast.LENGTH_LONG).show()
                         }
                         loadState.append is LoadState.Loading->{
                         }
