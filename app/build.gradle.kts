@@ -58,6 +58,7 @@ dependencies {
     implementation(libs.bundles.koin)
     /*Retrofit */
     implementation(libs.bundles.rerofit)
+    implementation(libs.logging.interceptor)
     /*Lifecycle*/
     /* Lifecycle */
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
@@ -80,6 +81,7 @@ dependencies {
     implementation(libs.glide)
     /*Recycler view*/
     implementation(libs.androidx.recyclerview)
+
 
 
     implementation(libs.androidx.lifecycle.lifecycle.common)
