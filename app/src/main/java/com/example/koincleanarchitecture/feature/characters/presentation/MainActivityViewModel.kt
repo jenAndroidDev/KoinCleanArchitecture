@@ -69,7 +69,14 @@ class MainActivityViewModel(private val repository: CharacterRepository) :ViewMo
         }
     }
     private fun createCharacterPagedRequest(shouldRefresh:Boolean){
-        if (job?.isActive==true ||(!shouldRefresh && endOfPagination )) return
+        val totalPages = uiState.value.totalPages
+        if (job?.isActive==true ||(!shouldRefresh && endOfPagination )){
+            Log.d(Tag, "checking if pagination ended= $endOfPagination")
+            return
+        }
+        Log.d(Tag, "createCharacterPagedRequest() called with: shouldRefresh = $shouldRefresh")
+        if (endOfPagination)return
+
         job?.cancel(CancellationException("Ongoing Api Call"))
         val pagedRequest = if (shouldRefresh){
             PagedRequest.create(LoadType.REFRESH, key = pageNumber, loadSize = DEFAULT_LOAD_SIZE )
@@ -103,6 +110,7 @@ class MainActivityViewModel(private val repository: CharacterRepository) :ViewMo
                         _uiState.update {
                             it.copy(
                                 data = tempList,
+                                totalPages = result.data.totalCount
                             )
                         }
                         endOfPagination = result.data.nextKey==null
@@ -148,7 +156,8 @@ data class CharacterUiState(
     val data:List<CharacterUiModel> = emptyList(),
     val dummyList:List<Sample> = emptyList(),
     val loadStates: LoadStates = LoadStates.IDLE,
-    val loadState: LoadState = LoadState.Loading()
+    val loadState: LoadState = LoadState.Loading(),
+    val totalPages:Int = 1
 )
 sealed interface CharacterUiAction{
     data class Scroll(

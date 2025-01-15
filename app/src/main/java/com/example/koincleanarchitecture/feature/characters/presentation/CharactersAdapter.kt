@@ -5,7 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil.ItemCallback
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil3.load
+import coil3.request.ImageRequest
+import coil3.request.placeholder
 import com.bumptech.glide.Glide
+import com.example.koincleanarchitecture.R
 import com.example.koincleanarchitecture.databinding.ItemLayoutCharactersBinding
 import com.example.koincleanarchitecture.feature.characters.domain.model.Character
 
@@ -37,9 +41,14 @@ class CharactersAdapter:ListAdapter<CharacterUiModel,CharactersAdapter.Character
 
         fun bind(model:Character) = with(binding){
             tvName.text =model.name
-            Glide.with(itemView.context)
-                .load(model.image)
-                .into(ivCharacter)
+            
+            ivCharacter.load(
+                model.image
+            ){
+                placeholder(R.drawable.character)
+            }
+
+
         }
     }
 

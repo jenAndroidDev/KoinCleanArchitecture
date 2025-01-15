@@ -43,7 +43,8 @@ class MainActivity : AppCompatActivity() {
     * 5.Migrate Retrofit Instance to Ktor
     * 6.Toggle Functionality for Character ReadStatus.
     * 7.Unit Test with Junit4
-    * 8.Migrate ViewModel by NowinAndroid Backed Offline Architecture*/
+    * 8.Migrate ViewModel by NowinAndroid Backed Offline Architecture Approach.
+    * 9.Replace Glide With Coil*/
     lateinit var binding: ActivityMainBinding
     private val viewModel: MainActivityViewModel by inject()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -148,7 +149,6 @@ class MainActivity : AppCompatActivity() {
                             lastVisibleItemPosition = lastVisibleItemPosition
                         )
                     )
-
                 }
             }
         }
