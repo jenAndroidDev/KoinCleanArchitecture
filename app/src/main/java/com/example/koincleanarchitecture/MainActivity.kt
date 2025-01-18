@@ -41,7 +41,8 @@ class MainActivity : AppCompatActivity() {
     * 3.Unit Test with Junit4
     * 4.Migrate ViewModel by NowinAndroid Backed Offline Architecture Approach.
     * 5.Implement Dark Mode and Light Mode.
-    * 6.Handle Last Page Response*/
+    * 6.Handle Last Page Response.
+    * 7.Migrate to Koin Annotations*/
     lateinit var binding: ActivityMainBinding
     private val viewModel: MainActivityViewModel by inject()
     override fun onCreate(savedInstanceState: Bundle?) {
