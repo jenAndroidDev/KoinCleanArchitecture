@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
     * 6.Toggle Functionality for Character ReadStatus.
     * 7.Unit Test with Junit4
     * 8.Migrate ViewModel by NowinAndroid Backed Offline Architecture Approach.
-    * 9.Replace Glide With Coil*/
+    * 9.Replace Glide With Coil==>Done*/
     lateinit var binding: ActivityMainBinding
     private val viewModel: MainActivityViewModel by inject()
     override fun onCreate(savedInstanceState: Bundle?) {

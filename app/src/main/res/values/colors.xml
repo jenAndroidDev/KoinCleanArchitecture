@@ -5,4 +5,6 @@
     <color name="grey">#a9a9a9</color>
     <color name="background">#121825</color>
     <color name="medium_grey">#A0A3A8</color>
+    <color name="black_grey_80">#2B2832</color>
+    <color name="black_grey_60">#3C3E43</color>
 </resources>
