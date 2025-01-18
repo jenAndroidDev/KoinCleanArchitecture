@@ -64,7 +64,7 @@ class MainActivityViewModel(private val repository: CharacterRepository) :ViewMo
                 viewModelScope.launch { scrollState.emit(action) }
             }
             is CharacterUiAction.Refresh->{
-                //createCharacterPagedRequest(shouldRefresh = true)
+                createCharacterPagedRequest(shouldRefresh = true)
             }
         }
     }
@@ -156,7 +156,6 @@ data class CharacterUiState(
     val data:List<CharacterUiModel> = emptyList(),
     val dummyList:List<Sample> = emptyList(),
     val loadStates: LoadStates = LoadStates.IDLE,
-    val loadState: LoadState = LoadState.Loading(),
     val totalPages:Int = 1
 )
 sealed interface CharacterUiAction{

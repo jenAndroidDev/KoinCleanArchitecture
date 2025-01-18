@@ -36,15 +36,12 @@ import timber.log.Timber
 private const val Tag = "MainActivity"
 class MainActivity : AppCompatActivity() {
     /*
-    * 1.Create a recycler view and populate the data==>Done
-    * 2.Add pagination and loadstate==>Done
-    * 3.Add End of Pagination Component==>Done
-    * 4.Add LoadState Adapter==>Done
-    * 5.Migrate Retrofit Instance to Ktor
-    * 6.Toggle Functionality for Character ReadStatus.
-    * 7.Unit Test with Junit4
-    * 8.Migrate ViewModel by NowinAndroid Backed Offline Architecture Approach.
-    * 9.Replace Glide With Coil==>Done*/
+    * 1.Migrate Retrofit Instance to Ktor
+    * 2.Toggle Functionality for Character ReadStatus.
+    * 3.Unit Test with Junit4
+    * 4.Migrate ViewModel by NowinAndroid Backed Offline Architecture Approach.
+    * 5.Implement Dark Mode and Light Mode.
+    * 6.Handle Last Page Response*/
     lateinit var binding: ActivityMainBinding
     private val viewModel: MainActivityViewModel by inject()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,15 +64,6 @@ class MainActivity : AppCompatActivity() {
         val footerAdapter = CharactersLoadStateAdapter{
             viewModel.refreshCharacterFeed()
         }
-        val loadState = uiState.map { it.loadState }.distinctUntilChanged()
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-                loadState.collectLatest {loadState->
-                        footerAdapter.loadState = loadState
-                }
-            }
-        }
-
         val characters = uiState.map { it.data }.distinctUntilChanged()
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
@@ -87,10 +75,16 @@ class MainActivity : AppCompatActivity() {
         val concatAdapter = ConcatAdapter(
             adapter,footerAdapter
         )
-
         listCharacters.adapter = concatAdapter
 
         val loadStates = uiState.map { it.loadStates }.distinctUntilChanged()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                loadStates.collectLatest {loadState->
+                    footerAdapter.loadState = loadState.append
+                }
+            }
+        }
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){

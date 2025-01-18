@@ -9,8 +9,9 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cd_character_container"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="180dp"
         app:cardCornerRadius="10dp"
+        app:cardElevation="12dp"
         app:cardBackgroundColor="?attr/colorSurface"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,6 +25,7 @@
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
                 android:src="@drawable/character"
+                android:scaleType="centerCrop"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -34,11 +36,74 @@
                 android:layout_height="wrap_content"
                 tools:text="Rich Sanchez"
                 android:textColor="?attr/colorOnSurface"
-                android:textSize="36sp"
+                android:textSize="28sp"
                 android:textStyle="bold"
+                android:layout_margin="12dp"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:ellipsize="end"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/iv_character"
                 app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Alive"
+                android:textSize="14sp"
+                android:textColor="?attr/colorOnSurface"
+                app:layout_constraintTop_toBottomOf="@+id/tv_name"
+                app:layout_constraintStart_toEndOf="@+id/iv_character"
+                android:layout_marginTop="4dp"
+                android:layout_marginStart="12dp"/>
+
+            <TextView
+                android:id="@+id/tv_last_known_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Last Known Location:"
+                android:textColor="?attr/colorPrimaryContainer"
+                android:layout_marginStart="12dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/iv_character"/>
+
+            <TextView
+                android:id="@+id/tv_last_known"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/iv_character"
+                app:layout_constraintTop_toBottomOf="@+id/tv_last_known_title"
+                tools:text="Earth"
+                android:layout_marginStart="12dp"
+                android:textColor="?attr/colorOnSurface"/>
+
+            <TextView
+                android:id="@+id/tv_last_seen_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="First Seen in"
+                android:textColor="?attr/colorPrimaryContainer"
+                android:layout_marginBottom="2dp"
+                android:includeFontPadding="false"
+                android:layout_marginStart="12dp"
+                app:layout_constraintStart_toEndOf="@+id/iv_character"
+                app:layout_constraintBottom_toTopOf="@+id/tv_last_seen"/>
+
+            <TextView
+                android:id="@+id/tv_last_seen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Sixteen Minutes"
+                android:includeFontPadding="false"
+                android:textColor="?attr/colorOnSurface"
+                android:layout_marginStart="12dp"
+                android:layout_marginBottom="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/iv_character"/>
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>

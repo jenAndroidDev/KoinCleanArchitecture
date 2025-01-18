@@ -15,7 +15,6 @@ import com.example.koincleanarchitecture.feature.characters.domain.model.Charact
 
 class CharactersAdapter:ListAdapter<CharacterUiModel,CharactersAdapter.CharacterViewHolder>(DiffUtil()) {
 
-
     class DiffUtil:ItemCallback<CharacterUiModel>(){
         override fun areItemsTheSame(
             oldItem: CharacterUiModel,
@@ -31,24 +30,24 @@ class CharactersAdapter:ListAdapter<CharacterUiModel,CharactersAdapter.Character
             newItem: CharacterUiModel
         ): Boolean {
             return oldItem==newItem
-
         }
 
     }
     inner class CharacterViewHolder(
         private val binding:ItemLayoutCharactersBinding
     ):RecyclerView.ViewHolder(binding.root){
-
         fun bind(model:Character) = with(binding){
             tvName.text =model.name
-            
             ivCharacter.load(
                 model.image
             ){
                 placeholder(R.drawable.character)
             }
-
-
+            tvStatus.text = model.status.plus(" - ${model.species} ")
+            tvLastSeenTitle.text = "First Seen In"
+            tvLastSeen.text = model.location.name
+            tvLastKnownTitle.text = "Last Known Location"
+            tvLastKnown.text = model.origin.name
         }
     }
 
