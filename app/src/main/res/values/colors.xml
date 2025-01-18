@@ -10,5 +10,6 @@
     <!--Colors for Light Theme-->
     <color name="golden_yellow">#FFC529</color>
     <color name="grey_white">#F7f7f7</color>
+    <color name="grey_10">#F4F4F4</color>
 
 </resources>

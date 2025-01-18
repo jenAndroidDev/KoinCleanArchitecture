@@ -3,15 +3,15 @@
     <style name="Base.Theme.KoinCleanArchitecture" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="colorPrimaryContainer">@color/medium_grey</item>
-        <item name="colorPrimary">@color/golden_yellow</item>
-        <item name="colorSurface">@color/black_grey_60</item>
-        <item name="colorOnSurface">@color/white</item>
-        <item name="colorAccent">@color/white</item>
-        <item name="android:colorBackground">@color/grey_white</item>
-        <item name="android:textColorPrimary">@color/golden_yellow</item>
-        <item name="android:colorAccent">@color/golden_yellow</item>
-        <item name="android:textColor">@color/golden_yellow</item>
+        <item name="colorPrimaryContainer">@color/white</item>
+        <item name="colorPrimary">@color/grey_10</item>
+        <item name="colorSurface">@color/grey_10</item>
+        <item name="colorOnSurface">@color/grey_10</item>
+        <item name="colorAccent">@color/black_grey_60</item>
+        <item name="android:colorBackground">@color/white</item>
+        <item name="android:textColorPrimary">@color/black_grey_60</item>
+        <item name="android:colorAccent">@color/black_grey_60</item>
+        <item name="android:textColor">@color/black_grey_60</item>
 
     </style>
 
