@@ -18,7 +18,6 @@ import com.example.koincleanarchitecture.feature.characters.presentation.Charact
 import com.example.koincleanarchitecture.feature.characters.presentation.CharacterUiState
 import com.example.koincleanarchitecture.feature.characters.presentation.CharactersAdapter
 import com.example.koincleanarchitecture.feature.characters.presentation.CharactersLoadStateAdapter
-import com.example.koincleanarchitecture.feature.characters.presentation.DummyAdapter
 import com.example.koincleanarchitecture.feature.characters.presentation.MainActivityViewModel
 import com.example.koincleanarchitecture.utils.paging.LoadState
 import kotlinx.coroutines.flow.Flow
