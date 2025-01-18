@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.UUID
 import java.util.concurrent.CancellationException
 
@@ -114,7 +115,8 @@ class MainActivityViewModel(private val repository: CharacterRepository) :ViewMo
                             )
                         }
                         endOfPagination = result.data.nextKey==null
-                        Log.d(Tag, "getAllCharacters() called with: result = $endOfPagination")
+                        Timber.tag(Tag)
+                            .d("getAllCharacters() called with: result = " + endOfPagination)
                         if (endOfPagination){
                             setLoading(loadType, LoadState.NotLoading.Complete)
                         }else{
@@ -136,7 +138,7 @@ class MainActivityViewModel(private val repository: CharacterRepository) :ViewMo
         val newLoadState = uiState.value.loadStates
             .modifyState(loadType,loadState)
 
-            _uiState.update {
+            this._uiState.update {
                 it.copy(
                     loadStates = newLoadState,
                 )

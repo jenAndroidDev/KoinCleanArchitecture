@@ -7,7 +7,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil3.load
 import coil3.request.ImageRequest
+import coil3.request.crossfade
 import coil3.request.placeholder
+import coil3.request.transformations
+import coil3.transform.CircleCropTransformation
+import coil3.transform.RoundedCornersTransformation
+import coil3.transform.Transformation
 import com.bumptech.glide.Glide
 import com.example.koincleanarchitecture.R
 import com.example.koincleanarchitecture.databinding.ItemLayoutCharactersBinding
@@ -41,7 +46,13 @@ class CharactersAdapter:ListAdapter<CharacterUiModel,CharactersAdapter.Character
             ivCharacter.load(
                 model.image
             ){
+                transformations(RoundedCornersTransformation(
+                    30f,0f,30f,0f
+                ))
                 placeholder(R.drawable.character)
+//                crossfade(true)
+//                crossfade(300)
+
             }
             tvStatus.text = model.status.plus(" - ${model.species} ")
             tvLastSeenTitle.text = "First Seen In"
