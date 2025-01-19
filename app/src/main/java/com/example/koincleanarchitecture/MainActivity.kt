@@ -77,21 +77,22 @@ class MainActivity : AppCompatActivity() {
         )
         listCharacters.adapter = concatAdapter
 
-        val loadStates = uiState.map { it.loadStates }.distinctUntilChanged()
+        val loadState = uiState.map { it.loadState }.distinctUntilChanged()
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
-                loadStates.collectLatest {loadState->
-                    footerAdapter.loadState = loadState.append
+                loadState.collectLatest {loadState->
+                    footerAdapter.loadState = loadState
                 }
             }
         }
+        val loadStates = uiState.map { it.loadStates }.distinctUntilChanged()
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 loadStates.collectLatest { loadState->
                     when{
                         loadState.refresh is LoadState.Loading->{
-                            Log.d(Tag, "check refresh state called with: loadState = $loadState")
+                            Timber.tag(Tag).d("check refresh state called with: loadState = " + loadState)
                            pgCharacters.isVisible =true
                             //listCharacters.isVisible = true
                         }
@@ -103,8 +104,7 @@ class MainActivity : AppCompatActivity() {
                         }
                         loadState.append is LoadState.NotLoading->{
                             //Toast.makeText(this@MainActivity,"Hello",Toast.LENGTH_LONG).show()
-                            Timber.tag(Tag)
-                                .d("check refresh state called with: loadState = " + loadState)
+                            Timber.tag(Tag).d("check refresh state called with: loadState = " + loadState)
                         }
                         else->{
                         }

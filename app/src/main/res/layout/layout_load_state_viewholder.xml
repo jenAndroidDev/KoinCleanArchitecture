@@ -11,7 +11,7 @@
         android:layout_height="100dp"
         android:indeterminateBehavior="cycle"
         android:indeterminate="true"
-        android:indeterminateTint="?attr/colorOnSurface"
+        android:indeterminateTint="?attr/colorAccent"
         android:visibility="visible"
         android:secondaryProgressTint="@color/grey"
         app:layout_constraintStart_toStartOf="parent"

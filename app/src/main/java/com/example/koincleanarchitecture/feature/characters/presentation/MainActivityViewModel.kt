@@ -72,11 +72,9 @@ class MainActivityViewModel(private val repository: CharacterRepository) :ViewMo
     private fun createCharacterPagedRequest(shouldRefresh:Boolean){
         val totalPages = uiState.value.totalPages
         if (job?.isActive==true ||(!shouldRefresh && endOfPagination )){
-            Log.d(Tag, "checking if pagination ended= $endOfPagination")
+            Timber.tag(Tag).d("checking if pagination ended= " + endOfPagination)
             return
         }
-        Log.d(Tag, "createCharacterPagedRequest() called with: shouldRefresh = $shouldRefresh")
-        if (endOfPagination)return
 
         job?.cancel(CancellationException("Ongoing Api Call"))
         val pagedRequest = if (shouldRefresh){
@@ -115,8 +113,7 @@ class MainActivityViewModel(private val repository: CharacterRepository) :ViewMo
                             )
                         }
                         endOfPagination = result.data.nextKey==null
-                        Timber.tag(Tag)
-                            .d("getAllCharacters() called with: result = " + endOfPagination)
+                        Timber.tag(Tag).d("getAllCharacters() called with: result = " + endOfPagination)
                         if (endOfPagination){
                             setLoading(loadType, LoadState.NotLoading.Complete)
                         }else{
@@ -141,6 +138,7 @@ class MainActivityViewModel(private val repository: CharacterRepository) :ViewMo
             this._uiState.update {
                 it.copy(
                     loadStates = newLoadState,
+                    loadState = loadState
                 )
             }
     }
@@ -158,6 +156,7 @@ data class CharacterUiState(
     val data:List<CharacterUiModel> = emptyList(),
     val dummyList:List<Sample> = emptyList(),
     val loadStates: LoadStates = LoadStates.IDLE,
+    val loadState:LoadState = LoadState.Loading(),
     val totalPages:Int = 1
 )
 sealed interface CharacterUiAction{
@@ -175,6 +174,6 @@ data class Sample(
     val age:String
 )
 private const val DEFAULT_LOAD_SIZE = 10
-private const val VISIBLE_ITEM_THRESHOLD = 5
+private const val VISIBLE_ITEM_THRESHOLD = 6
 private val CharacterUiAction.Scroll.shouldFetchMore get() =
     visibleItemCount+lastVisibleItemPosition+ VISIBLE_ITEM_THRESHOLD>=totalItemCount

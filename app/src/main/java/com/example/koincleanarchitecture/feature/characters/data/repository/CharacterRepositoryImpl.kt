@@ -1,6 +1,7 @@
 package com.example.koincleanarchitecture.feature.characters.data.repository
 
 import android.util.Log
+import androidx.compose.runtime.currentCompositionErrors
 import com.example.koincleanarchitecture.feature.characters.domain.model.Character
 import com.example.koincleanarchitecture.feature.characters.domain.repository.CharacterRepository
 import com.example.koincleanarchitecture.feature.characters.domain.source.remote.CharacterRemoteDataSource
@@ -23,6 +24,7 @@ private const val Tag = "CharacterRepositoryImpl"
                      val data = networkResult.data!!.results.map { it.toCharacter() }?: emptyList()
                      val totalCount = networkResult.data.info.pages
                      var currentPage = pageNo
+                     val previousKey = currentPage.toString()
                      val nextKey = if (pageNo==(networkResult.data.info.count-1)){
                          null
                      }else (++currentPage).toString()
@@ -30,7 +32,7 @@ private const val Tag = "CharacterRepositoryImpl"
                      Result.Success(
                          PagedData(
                              data = data,
-                             prevKey = null,
+                             prevKey = previousKey,
                              nextKey = nextKey,
                              totalCount = totalCount
                          )
