@@ -113,7 +113,8 @@ class MainActivityViewModel(private val repository: CharacterRepository) :ViewMo
                             )
                         }
                         endOfPagination = result.data.nextKey==null
-                        Timber.tag(Tag).d("getAllCharacters() called with: result = " + endOfPagination)
+                        Timber.tag(Tag).d("getAllCharacters() called with: result = " + endOfPagination
+                        +result.data.nextKey)
                         if (endOfPagination){
                             setLoading(loadType, LoadState.NotLoading.Complete)
                         }else{

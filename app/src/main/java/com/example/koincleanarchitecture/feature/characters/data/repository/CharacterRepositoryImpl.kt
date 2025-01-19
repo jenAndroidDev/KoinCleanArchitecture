@@ -25,7 +25,7 @@ private const val Tag = "CharacterRepositoryImpl"
                      val totalCount = networkResult.data.info.pages
                      var currentPage = pageNo
                      val previousKey = currentPage.toString()
-                     val nextKey = if (pageNo==(networkResult.data.info.count-1)){
+                     val nextKey = if (pageNo==(networkResult.data.info.pages-1)){
                          null
                      }else (++currentPage).toString()
 
