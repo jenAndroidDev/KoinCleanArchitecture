@@ -10,6 +10,7 @@ import com.example.koincleanarchitecture.R
 import com.example.koincleanarchitecture.databinding.LayoutLoadStateViewholderBinding
 import com.example.koincleanarchitecture.utils.extension.makeVisible
 import com.example.koincleanarchitecture.utils.paging.LoadState
+import timber.log.Timber
 
 private const val Tag = "CharactersLoadStateViewHolder"
 class CharactersLoadStateViewHolder(
@@ -22,7 +23,7 @@ class CharactersLoadStateViewHolder(
         }
     }
     fun bind(loadState: LoadState){
-        Log.d(Tag, "bind() called with: loadState = $loadState")
+        Timber.tag(Tag).d("bind() called with: loadState = " + loadState)
         if (loadState is LoadState.Error ){
             binding.tvErrorMessage.makeVisible()
             binding.tvErrorMessage.text = loadState.error.localizedMessage

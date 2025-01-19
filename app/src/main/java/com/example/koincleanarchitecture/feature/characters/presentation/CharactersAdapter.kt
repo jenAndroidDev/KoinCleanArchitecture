@@ -50,9 +50,6 @@ class CharactersAdapter:ListAdapter<CharacterUiModel,CharactersAdapter.Character
                     30f,0f,30f,0f
                 ))
                 placeholder(R.drawable.character)
-//                crossfade(true)
-//                crossfade(300)
-
             }
             tvStatus.text = model.status.plus(" - ${model.species} ")
             tvLastSeenTitle.text = "First Seen In"
