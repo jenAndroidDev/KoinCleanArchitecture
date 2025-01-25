@@ -2,12 +2,22 @@ package com.example.koincleanarchitecture.core.di
 
 import com.example.koincleanarchitecture.BuildConfig
 import com.example.koincleanarchitecture.utils.network.NetworkHelper
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.plugins.logging.Logger
+import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.plugins.logging.SIMPLE
+import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 
@@ -35,3 +45,26 @@ val networkHelper = module {
         NetworkHelper(androidContext())
     }
 }
+/*
+* Naming as Ktor Module since Retrofit Existing Module is Present
+* will migrate once the implementations are working fine*/
+val ktorModule = module {
+    single {
+        HttpClient(OkHttp) {
+            defaultRequest {
+                url(BuildConfig.BASE_URL)
+            }
+            install(Logging){
+                logger = Logger.SIMPLE
+            }
+            install(ContentNegotiation){
+                json(Json{
+                    ignoreUnknownKeys =true
+                    prettyPrint = true
+
+                })
+            }
+        }
+    }
+}
+

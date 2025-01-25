@@ -81,6 +81,8 @@ dependencies {
     implementation(libs.glide)
     /*Recycler view*/
     implementation(libs.androidx.recyclerview)
+    /*Ktor Client for Http Api Calls*/
+    implementation(libs.bundles.ktor)
 
 
 
