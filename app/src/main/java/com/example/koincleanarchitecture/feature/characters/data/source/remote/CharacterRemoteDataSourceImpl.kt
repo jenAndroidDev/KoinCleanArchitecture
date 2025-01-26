@@ -7,6 +7,7 @@ import com.example.koincleanarchitecture.utils.network.NetworkHelper
 import com.example.koincleanarchitecture.utils.network.NetworkResult
 import com.example.rickymortypagination.feature.rickymorty.data.source.remote.model.CharacterResponseModel
 import io.ktor.client.HttpClient
+import io.ktor.client.request.get
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -19,6 +20,7 @@ val ktorClient: HttpClient
     ):CharacterRemoteDataSource, BaseRemoteDataSource(networkHelper) {
 
     override fun getAllCharacters(pageNo: Int): Flow<NetworkResult<CharacterResponseModel>> = flow{
+        val result = ktorClient.get("")
         emit(NetworkResult.Loading())
         emit(safeApiCall { apiNetwork.getAllCharacters(page = pageNo) })
     }.flowOn(Dispatchers.IO)
