@@ -1,6 +1,7 @@
 package com.example.koincleanarchitecture
 
 import android.app.Application
+import com.example.koincleanarchitecture.core.di.ktorModule
 import com.example.koincleanarchitecture.core.di.networkHelper
 import com.example.koincleanarchitecture.core.di.networkModule
 import com.example.koincleanarchitecture.feature.characters.domain.di.characterFeatureModule

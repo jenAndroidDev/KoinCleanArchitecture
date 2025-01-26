@@ -4,11 +4,14 @@ import com.example.koincleanarchitecture.BuildConfig
 import com.example.koincleanarchitecture.utils.network.NetworkHelper
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.plugins.logging.SIMPLE
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
@@ -52,10 +55,15 @@ val ktorModule = module {
     single {
         HttpClient(OkHttp) {
             defaultRequest {
+                contentType(ContentType.Application.Json)
                 url(BuildConfig.BASE_URL)
             }
             install(Logging){
                 logger = Logger.SIMPLE
+            }
+            install(HttpTimeout){
+                requestTimeoutMillis = 5_000
+
             }
             install(ContentNegotiation){
                 json(Json{
