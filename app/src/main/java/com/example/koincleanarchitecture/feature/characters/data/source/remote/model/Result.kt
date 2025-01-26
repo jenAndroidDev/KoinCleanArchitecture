@@ -1,10 +1,12 @@
-package com.example.rickymortypagination.feature.rickymorty.data.source.remote.model
+package com.example.koincleanarchitecture.feature.characters.data.source.remote.model
 
 
 import com.example.koincleanarchitecture.feature.characters.data.source.remote.dto.LocationDto
 import com.example.koincleanarchitecture.feature.characters.data.source.remote.dto.OriginDto
 import com.example.koincleanarchitecture.feature.characters.domain.model.Character
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Result(
     val created: String,
     val episode: List<String>,

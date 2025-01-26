@@ -1,6 +1,7 @@
 package com.example.koincleanarchitecture.core.di
 
 import com.example.koincleanarchitecture.BuildConfig
+import com.example.koincleanarchitecture.KtorClientApiService
 import com.example.koincleanarchitecture.utils.network.NetworkHelper
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
@@ -48,6 +49,11 @@ val networkHelper = module {
         NetworkHelper(androidContext())
     }
 }
+val apiService = module {
+    single {
+        KtorClientApiService(get())
+    }
+}
 /*
 * Naming as Ktor Module since Retrofit Existing Module is Present
 * will migrate once the implementations are working fine*/
@@ -63,7 +69,6 @@ val ktorModule = module {
             }
             install(HttpTimeout){
                 requestTimeoutMillis = 5_000
-
             }
             install(ContentNegotiation){
                 json(Json{

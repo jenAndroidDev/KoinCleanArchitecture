@@ -1,6 +1,7 @@
 package com.example.koincleanarchitecture
 
 import android.app.Application
+import com.example.koincleanarchitecture.core.di.apiService
 import com.example.koincleanarchitecture.core.di.ktorModule
 import com.example.koincleanarchitecture.core.di.networkHelper
 import com.example.koincleanarchitecture.core.di.networkModule
@@ -19,9 +20,11 @@ class KoinCleanApp:Application() {
             androidContext(this@KoinCleanApp)
             androidLogger(level = Level.DEBUG)
             modules(
-                characterFeatureModule,
+                ktorModule,
+                apiService,
                 networkHelper,
                 networkModule,
+                characterFeatureModule
                 )
         }
     }
