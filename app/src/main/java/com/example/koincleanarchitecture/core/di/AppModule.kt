@@ -2,12 +2,15 @@ package com.example.koincleanarchitecture.core.di
 
 import com.example.koincleanarchitecture.BuildConfig
 import com.example.koincleanarchitecture.KtorClientApiService
+import com.example.koincleanarchitecture.utils.network.KtorHttpLogger
 import com.example.koincleanarchitecture.utils.network.NetworkHelper
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.plugins.logging.ANDROID
+import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.plugins.logging.SIMPLE
@@ -57,6 +60,7 @@ val apiService = module {
 /*
 * Naming as Ktor Module since Retrofit Existing Module is Present
 * will migrate once the implementations are working fine*/
+private const val Tag = "KtorTag"
 val ktorModule = module {
     single {
         HttpClient(OkHttp) {
@@ -65,7 +69,8 @@ val ktorModule = module {
                 url(BuildConfig.BASE_URL)
             }
             install(Logging){
-                logger = Logger.SIMPLE
+                logger = KtorHttpLogger()
+                level = LogLevel.BODY
             }
             install(HttpTimeout){
                 requestTimeoutMillis = 5_000
@@ -74,7 +79,6 @@ val ktorModule = module {
                 json(Json{
                     ignoreUnknownKeys =true
                     prettyPrint = true
-
                 })
             }
         }

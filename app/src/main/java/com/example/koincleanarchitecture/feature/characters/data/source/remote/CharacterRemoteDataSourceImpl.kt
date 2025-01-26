@@ -11,15 +11,15 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
-class CharacterRemoteDataSourceImpl(private
-val apiNetwork: KoinCleanApiNetwork,
-val networkHelper: NetworkHelper,
-    ):CharacterRemoteDataSource, BaseRemoteDataSource(networkHelper) {
-
-    override fun getAllCharacters(pageNo: Int): Flow<NetworkResult<CharacterResponseModel>> = flow{
-        emit(NetworkResult.Loading())
-        emit(safeApiCall { apiNetwork.getAllCharacters(page = pageNo) })
-    }.flowOn(Dispatchers.IO)
-
-}
+//class CharacterRemoteDataSourceImpl(private
+//val apiNetwork: KoinCleanApiNetwork,
+//val networkHelper: NetworkHelper,
+//    ):CharacterRemoteDataSource, BaseRemoteDataSource(networkHelper) {
+//
+//    override fun getAllCharacters(pageNo: Int): Flow<NetworkResult<CharacterResponseModel>> = flow{
+//        emit(NetworkResult.Loading())
+//        emit(safeApiCall { apiNetwork.getAllCharacters(page = pageNo) })
+//    }.flowOn(Dispatchers.IO)
+//
+//}
 

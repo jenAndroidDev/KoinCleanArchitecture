@@ -23,7 +23,6 @@ class KoinCleanApp:Application() {
                 ktorModule,
                 apiService,
                 networkHelper,
-                networkModule,
                 characterFeatureModule
                 )
         }

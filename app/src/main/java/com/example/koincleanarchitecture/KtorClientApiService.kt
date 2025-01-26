@@ -7,8 +7,8 @@ class KtorClientApiService(
     private val httpClient: HttpClient
 ) {
     companion object {
-        private const val GET_CHARACTERS = "api/character/?page=1"
+        private const val GET_CHARACTERS = "api/character/?page="
     }
-    suspend fun getCharacters(pageNo: Int) = httpClient.get(GET_CHARACTERS)
+    suspend fun getCharacters(pageNo: Int) = httpClient.get(GET_CHARACTERS.plus(pageNo))
 
 }
